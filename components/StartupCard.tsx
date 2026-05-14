@@ -13,7 +13,7 @@ export function StartupCard({ startup, onClick }: StartupCardProps) {
     <button
       type="button"
       onClick={onClick}
-      className="group w-full rounded-md border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-5 text-left transition-colors duration-150 hover:border-neutral-900 hover:bg-neutral-50 dark:hover:border-neutral-600 dark:hover:bg-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+      className="group w-full rounded-md border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 text-left transition-colors duration-150 hover:border-neutral-900 hover:bg-neutral-50 dark:hover:border-neutral-600 dark:hover:bg-neutral-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
     >
       {/* Row 1: name + YC badge */}
       <div className="mb-2 flex items-start justify-between gap-2">

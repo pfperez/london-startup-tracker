@@ -81,7 +81,7 @@ export default function HomePage() {
             </div>
             <div className="flex items-center gap-4">
               <span className="font-mono-numbers text-xs text-neutral-500 hidden sm:inline">
-                v0.1 &middot; {startups.length} companies &middot; 14 May 2026
+                v0.1 &middot;{" "}{startups.length}{" "}companies &middot; 14 May 2026
               </span>
               <ThemeToggle />
               <Link

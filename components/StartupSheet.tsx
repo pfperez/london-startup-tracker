@@ -95,7 +95,7 @@ export function StartupSheet({ startup, onClose }: StartupSheetProps) {
                           rel="noopener noreferrer"
                           className="font-mono-numbers text-xs text-neutral-600 dark:text-neutral-400 underline hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                         >
-                          {startup.website.replace(/^https?:\/\//, "")}
+                          Website ↗
                         </a>
                       )}
                       {startup.linkedinUrl && (
@@ -105,7 +105,7 @@ export function StartupSheet({ startup, onClose }: StartupSheetProps) {
                           rel="noopener noreferrer"
                           className="font-mono-numbers text-xs text-neutral-600 dark:text-neutral-400 underline hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                         >
-                          linkedin
+                          LinkedIn ↗
                         </a>
                       )}
                     </div>

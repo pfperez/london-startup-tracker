@@ -231,7 +231,7 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
               }
               className="flex items-center h-8 font-mono-numbers text-xs text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 transition-colors"
             >
-              clear
+              × clear all
             </button>
           )}
         </div>

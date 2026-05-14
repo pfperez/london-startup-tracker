@@ -19,7 +19,7 @@ export function PiasPick({ onSelect }: PiasPickProps) {
       <button
         type="button"
         onClick={() => onSelect(startup)}
-        className="w-full text-left rounded-md border border-emerald-500/30 bg-white dark:bg-neutral-950 p-5 hover:border-emerald-500/60 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        className="w-full text-left rounded-md border border-emerald-500/15 bg-white dark:bg-neutral-950 p-5 hover:border-emerald-500/40 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
       >
         <p className="font-mono-numbers text-xs text-emerald-600 dark:text-emerald-400 mb-3">
           ▪ pia&apos;s pick — week of {pick.weekOf}
