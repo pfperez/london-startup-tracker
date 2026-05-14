@@ -41,7 +41,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}
     >
-      <body className="min-h-screen bg-white">{children}</body>
+      <body className="min-h-screen bg-paper">{children}</body>
     </html>
   );
 }

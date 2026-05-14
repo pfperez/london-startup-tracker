@@ -65,9 +65,9 @@ function MultiSelect<T extends string>({
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={cn(
-          "flex h-8 items-center gap-1 border-b bg-transparent font-mono-numbers text-xs outline-none transition-colors",
+          "flex h-8 items-center gap-1 border-b bg-transparent font-mono-numbers text-xs uppercase tracking-widest outline-none transition-colors",
           active
-            ? "border-neutral-900 text-neutral-900"
+            ? "border-ink text-ink"
             : "border-neutral-300 text-neutral-400 hover:border-neutral-500 hover:text-neutral-600"
         )}
       >
@@ -79,7 +79,7 @@ function MultiSelect<T extends string>({
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-50 mt-1 min-w-44 border border-neutral-200 bg-white py-1 shadow-md">
+        <div className="absolute left-0 top-full z-50 mt-1 min-w-44 border border-neutral-200 bg-paper py-1 shadow-sm">
           {options.map((option) => {
             const checked = selected.includes(option);
             return (
@@ -88,15 +88,15 @@ function MultiSelect<T extends string>({
                 type="button"
                 onClick={() => toggle(option)}
                 className={cn(
-                  "flex w-full items-center gap-2 px-3 py-1.5 text-left font-mono-numbers text-xs hover:bg-neutral-50",
-                  checked ? "text-neutral-900" : "text-neutral-500"
+                  "flex w-full items-center gap-2 px-3 py-1.5 text-left font-mono-numbers text-xs uppercase tracking-widest hover:bg-neutral-50",
+                  checked ? "text-ink" : "text-neutral-400"
                 )}
               >
                 <span
                   className={cn(
                     "flex h-3 w-3 shrink-0 items-center justify-center border text-[9px] leading-none",
                     checked
-                      ? "border-neutral-900 bg-neutral-900 text-white"
+                      ? "border-ink bg-ink text-paper"
                       : "border-neutral-300"
                   )}
                 >
@@ -112,7 +112,7 @@ function MultiSelect<T extends string>({
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="w-full px-3 py-1 text-left font-mono-numbers text-xs text-neutral-300 hover:text-neutral-500"
+                className="w-full px-3 py-1 text-left font-mono-numbers text-xs uppercase tracking-widest text-neutral-300 hover:text-neutral-500"
               >
                 clear
               </button>
@@ -133,16 +133,19 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
     filters.ycOnly;
 
   return (
-    <div className="sticky top-0 z-40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 py-3">
+    <div className="sticky top-0 z-40 bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
+      <div className="mx-auto max-w-[1100px] px-8 sm:px-5">
+        <p className="pt-4 pb-1 font-mono-numbers text-xs uppercase tracking-widest text-neutral-400">
+          Browse
+        </p>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pb-4">
           {/* Search */}
           <input
             type="text"
-            placeholder="search"
+            placeholder="SEARCH BY NAME, SECTOR, OR TAG"
             value={filters.search}
             onChange={(e) => onChange({ ...filters, search: e.target.value })}
-            className="h-8 w-40 min-w-0 border-b border-neutral-300 bg-transparent font-mono-numbers text-xs text-neutral-900 placeholder:text-neutral-400 outline-none transition-colors focus:border-neutral-900 sm:w-52"
+            className="h-8 w-64 min-w-0 border-b border-neutral-300 bg-transparent font-mono-numbers text-xs text-ink placeholder:text-neutral-300 outline-none transition-colors focus:border-ink sm:w-52"
           />
 
           {/* Sector */}
@@ -163,7 +166,7 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
 
           {/* Team size */}
           <div className="flex items-center gap-2">
-            <span className="font-mono-numbers text-xs text-neutral-400">
+            <span className="font-mono-numbers text-xs uppercase tracking-widest text-neutral-400">
               team ≤
             </span>
             <input
@@ -175,21 +178,21 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
               onChange={(e) =>
                 onChange({ ...filters, teamSizeMax: Number(e.target.value) })
               }
-              className="h-px w-20 cursor-pointer accent-neutral-900"
+              className="h-px w-20 cursor-pointer accent-sage"
             />
-            <span className="w-7 font-mono-numbers text-xs tabular-nums text-neutral-500 text-right">
+            <span className="w-7 font-mono-numbers text-xs uppercase tracking-widest tabular-nums text-neutral-500 text-right">
               {filters.teamSizeMax === 500 ? "any" : filters.teamSizeMax}
             </span>
           </div>
 
-          {/* YC toggle — text link style */}
+          {/* YC toggle */}
           <button
             type="button"
             onClick={() => onChange({ ...filters, ycOnly: !filters.ycOnly })}
             className={cn(
-              "font-mono-numbers text-xs transition-colors",
+              "font-mono-numbers text-xs uppercase tracking-widest transition-colors",
               filters.ycOnly
-                ? "font-bold text-neutral-900"
+                ? "font-medium text-ink"
                 : "text-neutral-400 hover:text-neutral-600"
             )}
           >
@@ -209,7 +212,7 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
                   ycOnly: false,
                 })
               }
-              className="font-mono-numbers text-xs text-neutral-300 hover:text-neutral-500 transition-colors"
+              className="font-mono-numbers text-xs uppercase tracking-widest text-neutral-300 hover:text-neutral-500 transition-colors"
             >
               ✕ clear
             </button>
