@@ -41,75 +41,67 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Header */}
-      <header className="border-b border-zinc-100 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      {/* ── Header ── */}
+      <header className="mx-auto w-full max-w-7xl px-4 pb-10 pt-16 sm:px-6 lg:px-8">
+        <div className="max-w-3xl">
           <div className="flex items-baseline justify-between">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
-                London Startup Tracker
-              </h1>
-              <p className="mt-1 text-sm text-zinc-500">
-                An evolving map of early-stage London startups I&apos;m tracking.
-              </p>
-            </div>
+            <h1 className="font-serif text-5xl leading-none tracking-tight text-neutral-900 sm:text-6xl">
+              London Startup Tracker
+            </h1>
             <Link
               href="/about"
-              className="text-sm text-zinc-400 hover:text-emerald-600 transition-colors"
+              className="font-mono-numbers text-xs text-neutral-400 hover:text-neutral-700 transition-colors ml-6 shrink-0"
             >
               About
             </Link>
           </div>
 
-          {/* Intro */}
-          <div className="mt-5 max-w-2xl rounded-md border border-zinc-100 bg-zinc-50 px-4 py-3">
-            <p className="text-sm leading-relaxed text-zinc-600">
-              {/* {{ABOUT_ME}} — replace this block with 2 sentences about who you are and why you built this */}
-              I&apos;m{" "}
-              <span className="font-medium text-zinc-800">
-                {"{{ABOUT_ME}}"}
-              </span>
-              , and I built this to keep track of London startups I find interesting
-              while exploring the ecosystem. Everything here is manually curated
-              — data marked{" "}
-              <code className="rounded bg-zinc-200 px-1 py-0.5 text-xs">
-                TODO: verify
-              </code>{" "}
-              in the source is my best estimate.
-            </p>
-          </div>
+          <p className="mt-6 text-base leading-7 text-neutral-600">
+            I&apos;m Pia, a 2nd-year International Business student at Rotterdam
+            University of Applied Sciences. I&apos;m tracking London startups I
+            find interesting as I research where I want to intern in 2027.
+            Everything here is hand-curated — I add companies as I come across
+            ones I&apos;d genuinely consider working at.
+          </p>
+
+          <p className="mt-3 font-mono-numbers text-xs text-neutral-400">
+            Last updated: 14 May 2026 &middot; {startups.length} companies
+          </p>
         </div>
       </header>
 
-      {/* Sticky filter bar */}
+      <div className="border-t border-neutral-200" />
+
+      {/* ── Filter bar ── */}
       <FilterBar filters={filters} onChange={setFilters} />
 
-      {/* Grid */}
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Count */}
-        <p className="mb-4 font-mono-numbers text-sm tabular-nums text-zinc-400">
+      <div className="border-t border-neutral-200" />
+
+      {/* ── Grid ── */}
+      <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <p className="mb-5 font-mono-numbers text-xs tabular-nums text-neutral-400">
           Showing{" "}
-          <span className="font-semibold text-zinc-700">{filtered.length}</span>{" "}
-          of{" "}
-          <span className="font-semibold text-zinc-700">{startups.length}</span>{" "}
-          startups
+          <span className="text-neutral-600">{filtered.length}</span>
+          {" "}of{" "}
+          <span className="text-neutral-600">{startups.length}</span>
+          {" "}startups
         </p>
 
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <p className="text-sm font-medium text-zinc-400">
+          <div className="flex flex-col items-center justify-center py-24">
+            <p className="font-mono-numbers text-sm text-neutral-400">
               No startups match your filters.
             </p>
             <button
               type="button"
               onClick={() => setFilters(DEFAULT_FILTERS)}
-              className="mt-2 text-sm text-emerald-600 hover:underline"
+              className="mt-2 font-mono-numbers text-xs text-neutral-400 underline hover:text-neutral-700 transition-colors"
             >
               Clear filters
             </button>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-px sm:grid-cols-2 lg:grid-cols-3 border border-neutral-200">
             {filtered.map((startup) => (
               <StartupCard
                 key={startup.id}
@@ -121,19 +113,22 @@ export default function HomePage() {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-100 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <p className="font-mono-numbers text-xs text-zinc-400">
-            {startups.length} startups tracked · Data may be out of date ·{" "}
-            <Link href="/about" className="hover:text-emerald-600 transition-colors">
-              About this project
-            </Link>
-          </p>
-        </div>
+      {/* ── Footer ── */}
+      <div className="border-t border-neutral-200" />
+      <footer className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <p className="font-mono-numbers text-xs text-neutral-400">
+          Built by Pia &middot; Cursor + Claude Code &middot;{" "}
+          {/* Replace # with your GitHub repo URL after pushing */}
+          <a
+            href="#"
+            className="hover:text-neutral-700 transition-colors underline"
+          >
+            GitHub
+          </a>
+        </p>
       </footer>
 
-      {/* Detail sheet */}
+      {/* ── Detail sheet ── */}
       <StartupSheet startup={selected} onClose={() => setSelected(null)} />
     </>
   );

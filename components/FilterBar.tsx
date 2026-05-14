@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, X, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Sector, Stage } from "@/types/startup";
 import { SECTORS, STAGES } from "@/types/startup";
@@ -19,7 +19,6 @@ interface FilterBarProps {
   onChange: (filters: Filters) => void;
 }
 
-// Reusable multi-select dropdown
 function MultiSelect<T extends string>({
   options,
   selected,
@@ -44,11 +43,11 @@ function MultiSelect<T extends string>({
   }, []);
 
   function toggle(option: T) {
-    if (selected.includes(option)) {
-      onChange(selected.filter((s) => s !== option));
-    } else {
-      onChange([...selected, option]);
-    }
+    onChange(
+      selected.includes(option)
+        ? selected.filter((s) => s !== option)
+        : [...selected, option]
+    );
   }
 
   const label =
@@ -56,7 +55,9 @@ function MultiSelect<T extends string>({
       ? placeholder
       : selected.length === 1
       ? selected[0]
-      : `${selected.length} selected`;
+      : `${placeholder} (${selected.length})`;
+
+  const active = selected.length > 0;
 
   return (
     <div ref={ref} className="relative">
@@ -64,19 +65,21 @@ function MultiSelect<T extends string>({
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={cn(
-          "flex h-9 min-w-36 items-center justify-between gap-2 rounded-md border border-zinc-200 bg-white px-3 text-sm text-zinc-700 hover:border-zinc-300 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 transition-colors",
-          selected.length > 0 && "border-emerald-600 text-emerald-700"
+          "flex h-8 items-center gap-1 border-b bg-transparent font-mono-numbers text-xs outline-none transition-colors",
+          active
+            ? "border-neutral-900 text-neutral-900"
+            : "border-neutral-300 text-neutral-400 hover:border-neutral-500 hover:text-neutral-600"
         )}
       >
-        <span className="truncate">{label}</span>
+        {label}
         <ChevronDown
-          size={14}
+          size={10}
           className={cn("shrink-0 transition-transform", open && "rotate-180")}
         />
       </button>
 
       {open && (
-        <div className="absolute left-0 top-full z-50 mt-1 min-w-48 rounded-md border border-zinc-200 bg-white py-1 shadow-lg">
+        <div className="absolute left-0 top-full z-50 mt-1 min-w-44 border border-neutral-200 bg-white py-1 shadow-md">
           {options.map((option) => {
             const checked = selected.includes(option);
             return (
@@ -85,16 +88,16 @@ function MultiSelect<T extends string>({
                 type="button"
                 onClick={() => toggle(option)}
                 className={cn(
-                  "flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-zinc-50",
-                  checked && "text-emerald-700"
+                  "flex w-full items-center gap-2 px-3 py-1.5 text-left font-mono-numbers text-xs hover:bg-neutral-50",
+                  checked ? "text-neutral-900" : "text-neutral-500"
                 )}
               >
                 <span
                   className={cn(
-                    "flex h-4 w-4 shrink-0 items-center justify-center rounded border text-[10px]",
+                    "flex h-3 w-3 shrink-0 items-center justify-center border text-[9px] leading-none",
                     checked
-                      ? "border-emerald-600 bg-emerald-600 text-white"
-                      : "border-zinc-300"
+                      ? "border-neutral-900 bg-neutral-900 text-white"
+                      : "border-neutral-300"
                   )}
                 >
                   {checked && "✓"}
@@ -105,13 +108,13 @@ function MultiSelect<T extends string>({
           })}
           {selected.length > 0 && (
             <>
-              <div className="my-1 h-px bg-zinc-100" />
+              <div className="my-1 h-px bg-neutral-100" />
               <button
                 type="button"
                 onClick={() => onChange([])}
-                className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-xs text-zinc-400 hover:bg-zinc-50"
+                className="w-full px-3 py-1 text-left font-mono-numbers text-xs text-neutral-300 hover:text-neutral-500"
               >
-                Clear
+                clear
               </button>
             </>
           )}
@@ -129,43 +132,25 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
     filters.teamSizeMax < 500 ||
     filters.ycOnly;
 
-  function reset() {
-    onChange({
-      search: "",
-      sectors: [],
-      stages: [],
-      teamSizeMax: 500,
-      ycOnly: false,
-    });
-  }
-
   return (
-    <div className="sticky top-0 z-40 border-b border-zinc-100 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
-      <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-center gap-2">
+    <div className="sticky top-0 z-40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 py-3">
           {/* Search */}
-          <div className="relative min-w-52 flex-1">
-            <Search
-              size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-            />
-            <input
-              type="text"
-              placeholder="Search name, description, tags…"
-              value={filters.search}
-              onChange={(e) =>
-                onChange({ ...filters, search: e.target.value })
-              }
-              className="h-9 w-full rounded-md border border-zinc-200 bg-white pl-8 pr-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20 transition-colors"
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="search"
+            value={filters.search}
+            onChange={(e) => onChange({ ...filters, search: e.target.value })}
+            className="h-8 w-40 min-w-0 border-b border-neutral-300 bg-transparent font-mono-numbers text-xs text-neutral-900 placeholder:text-neutral-400 outline-none transition-colors focus:border-neutral-900 sm:w-52"
+          />
 
           {/* Sector */}
           <MultiSelect<Sector>
             options={SECTORS}
             selected={filters.sectors}
             onChange={(v) => onChange({ ...filters, sectors: v })}
-            placeholder="Sector"
+            placeholder="sector"
           />
 
           {/* Stage */}
@@ -173,12 +158,14 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
             options={STAGES}
             selected={filters.stages}
             onChange={(v) => onChange({ ...filters, stages: v })}
-            placeholder="Stage"
+            placeholder="stage"
           />
 
           {/* Team size */}
           <div className="flex items-center gap-2">
-            <span className="shrink-0 text-xs text-zinc-500">Team ≤</span>
+            <span className="font-mono-numbers text-xs text-neutral-400">
+              team ≤
+            </span>
             <input
               type="range"
               min={1}
@@ -186,42 +173,45 @@ export function FilterBar({ filters, onChange }: FilterBarProps) {
               step={5}
               value={filters.teamSizeMax}
               onChange={(e) =>
-                onChange({
-                  ...filters,
-                  teamSizeMax: Number(e.target.value),
-                })
+                onChange({ ...filters, teamSizeMax: Number(e.target.value) })
               }
-              className="h-1.5 w-24 cursor-pointer accent-emerald-600"
+              className="h-px w-20 cursor-pointer accent-neutral-900"
             />
-            <span className="w-8 shrink-0 text-right font-mono-numbers text-xs tabular-nums text-zinc-600">
-              {filters.teamSizeMax === 500 ? "Any" : filters.teamSizeMax}
+            <span className="w-7 font-mono-numbers text-xs tabular-nums text-neutral-500 text-right">
+              {filters.teamSizeMax === 500 ? "any" : filters.teamSizeMax}
             </span>
           </div>
 
-          {/* YC toggle */}
+          {/* YC toggle — text link style */}
           <button
             type="button"
             onClick={() => onChange({ ...filters, ycOnly: !filters.ycOnly })}
             className={cn(
-              "flex h-9 items-center gap-1.5 rounded-md border px-3 text-sm transition-colors",
+              "font-mono-numbers text-xs transition-colors",
               filters.ycOnly
-                ? "border-orange-300 bg-orange-50 text-orange-700"
-                : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300"
+                ? "font-bold text-neutral-900"
+                : "text-neutral-400 hover:text-neutral-600"
             )}
           >
-            <span className="text-xs font-semibold">YC</span>
-            <span className="text-xs">only</span>
+            yc only
           </button>
 
           {/* Clear */}
           {hasActiveFilters && (
             <button
               type="button"
-              onClick={reset}
-              className="flex h-9 items-center gap-1 rounded-md px-2 text-xs text-zinc-400 hover:text-zinc-600 transition-colors"
+              onClick={() =>
+                onChange({
+                  search: "",
+                  sectors: [],
+                  stages: [],
+                  teamSizeMax: 500,
+                  ycOnly: false,
+                })
+              }
+              className="font-mono-numbers text-xs text-neutral-300 hover:text-neutral-500 transition-colors"
             >
-              <X size={13} />
-              Clear
+              ✕ clear
             </button>
           )}
         </div>
