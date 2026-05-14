@@ -9,46 +9,44 @@ interface StartupCardProps {
 }
 
 export function StartupCard({ startup, onClick }: StartupCardProps) {
-  const metaRow = [
-    `Raise ${startup.lastRaiseAmount}`,
-    startup.lastRaiseDate,
-    `Team ~${startup.teamSize}`,
-    `Founded by ${startup.founders.join(", ")}`,
-  ].join(" · ");
-
   return (
     <button
       type="button"
       onClick={onClick}
-      className="group w-full border-t border-neutral-200 bg-paper py-8 text-left transition-all duration-200 hover:border-neutral-900 hover:bg-neutral-50/50"
+      className="group w-full rounded-md border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 p-5 text-left transition-colors duration-150 hover:border-neutral-900 hover:bg-neutral-50 dark:hover:border-neutral-600 dark:hover:bg-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
     >
-      {/* Name + right badges */}
-      <div className="flex items-start justify-between gap-4 mb-3">
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 min-w-0">
-          <h3 className="font-serif text-2xl leading-tight text-ink group-hover:text-sage transition-colors">
-            {startup.name}
-          </h3>
-          {startup.ycBatch && (
-            <Badge variant="yc">YC {startup.ycBatch}</Badge>
-          )}
-        </div>
-        <div className="flex flex-wrap justify-end gap-1.5 shrink-0">
-          <Badge variant="stage" stage={startup.stage}>
-            {startup.stage}
+      {/* Row 1: name + YC badge */}
+      <div className="mb-2 flex items-start justify-between gap-2">
+        <span className="text-lg font-semibold leading-tight text-[#0A0A0A] dark:text-[#FAFAFA]">
+          {startup.name}
+        </span>
+        {startup.ycBatch && (
+          <Badge variant="yc" className="shrink-0 mt-0.5">
+            YC {startup.ycBatch}
           </Badge>
-          <Badge variant="sector">{startup.sector}</Badge>
-        </div>
+        )}
       </div>
 
-      {/* One-liner */}
-      <p className="mb-4 text-sm leading-relaxed text-neutral-600">
+      {/* Row 2: one-liner */}
+      <p className="mb-4 text-sm leading-relaxed text-neutral-700 dark:text-neutral-400 line-clamp-2">
         {startup.oneLiner}
       </p>
 
-      {/* Metadata row */}
-      <p className="font-mono-numbers text-xs uppercase tracking-wider text-neutral-400">
-        {metaRow}
-      </p>
+      {/* Row 3: stage + sector tags */}
+      <div className="mb-4 flex flex-wrap gap-1.5">
+        <Badge variant="stage">{startup.stage}</Badge>
+        <Badge variant="sector">{startup.sector}</Badge>
+      </div>
+
+      {/* Row 4: metadata */}
+      <div className="font-mono-numbers text-xs text-neutral-500 space-y-0.5">
+        <p>
+          {startup.lastRaiseAmount} · {startup.lastRaiseDate} · team ~{startup.teamSize}
+        </p>
+        {startup.founders.length > 0 && (
+          <p>{startup.founders.join(", ")}</p>
+        )}
+      </div>
     </button>
   );
 }

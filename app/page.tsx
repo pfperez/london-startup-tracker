@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { startups } from "@/data/startups";
 import { FilterBar, type Filters } from "@/components/FilterBar";
 import { StartupCard } from "@/components/StartupCard";
 import { StartupSheet } from "@/components/StartupSheet";
+import { PiasPick } from "@/components/PiasPick";
 import type { Startup } from "@/types/startup";
 
 const DEFAULT_FILTERS: Filters = {
@@ -15,6 +16,31 @@ const DEFAULT_FILTERS: Filters = {
   teamSizeMax: 500,
   ycOnly: false,
 };
+
+function ThemeToggle() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  function toggle() {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle("dark", next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      className="font-mono-numbers text-xs text-neutral-500 hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] transition-colors"
+    >
+      {isDark ? "light" : "dark"}
+    </button>
+  );
+}
 
 export default function HomePage() {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
@@ -40,67 +66,81 @@ export default function HomePage() {
   }, [filters]);
 
   return (
-    <>
-      {/* ── Header ── */}
-      <header className="mx-auto w-full max-w-[1100px] px-8 pb-12 pt-16 sm:px-5">
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="font-serif text-4xl leading-none text-ink title-breathe sm:text-6xl">
-            London Startup Tracker
-          </h1>
-          <Link
-            href="/about"
-            className="font-mono-numbers text-xs uppercase tracking-widest text-neutral-400 hover:text-neutral-700 transition-colors shrink-0 mt-2"
-          >
-            About
-          </Link>
+    <div className="min-h-screen bg-white dark:bg-[#0A0A0A]">
+      {/* ── Sticky header ── */}
+      <header className="sticky top-0 z-50 border-b border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-[#0A0A0A]/95 backdrop-blur">
+        <div className="mx-auto max-w-[1200px] px-6 sm:px-4">
+          <div className="flex h-14 items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg font-semibold tracking-tight text-[#0A0A0A] dark:text-[#FAFAFA]">
+                London Startup Tracker
+              </span>
+              <span className="text-emerald-500 text-xs leading-none select-none">
+                ▪
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="font-mono-numbers text-xs text-neutral-500 hidden sm:inline">
+                v0.1 &middot; {startups.length} companies &middot; 14 May 2026
+              </span>
+              <ThemeToggle />
+              <Link
+                href="/about"
+                className="font-mono-numbers text-xs text-neutral-500 hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] transition-colors"
+              >
+                about
+              </Link>
+            </div>
+          </div>
         </div>
-
-        <p className="mt-8 max-w-2xl text-sm leading-[1.65] text-neutral-600">
-          I&apos;m Pia, a 2nd-year International Business student at Rotterdam
-          University of Applied Sciences. I&apos;m tracking London startups I
-          find interesting as I research where I want to intern in 2027.
-          Everything here is hand-curated — I add companies as I come across
-          ones I&apos;d genuinely consider working at.
-        </p>
-
-        <p className="mt-4 font-mono-numbers text-xs uppercase tracking-widest text-neutral-400">
-          Last updated 14 May 2026 &mdash; {startups.length} companies
-        </p>
       </header>
 
-      <div className="border-t border-neutral-200" />
+      {/* ── Intro ── */}
+      <section className="mx-auto max-w-[1200px] px-6 py-6 sm:px-4">
+        <p className="font-mono-numbers text-xs uppercase tracking-wider text-neutral-500 mb-3">
+          A working list of early-stage London startups I&apos;m watching
+        </p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-2xl">
+          I&apos;m Pia — 2nd-year International Business at Rotterdam UAS.
+          I&apos;m researching where I want to intern in 2027 and building this
+          in public as I go. Curated by hand, not scraped. Companies added when
+          I&apos;d genuinely consider working there.
+        </p>
+      </section>
+
+      {/* ── Pia's Pick ── */}
+      <div className="border-t border-neutral-200 dark:border-neutral-800">
+        <PiasPick onSelect={setSelected} />
+      </div>
 
       {/* ── Filter bar ── */}
-      <FilterBar filters={filters} onChange={setFilters} />
+      <div className="border-t border-neutral-200 dark:border-neutral-800">
+        <FilterBar filters={filters} onChange={setFilters} />
+      </div>
 
-      <div className="border-t border-neutral-200" />
-
-      {/* ── Card list ── */}
-      <main className="mx-auto w-full max-w-[1100px] px-8 py-10 sm:px-5">
-        <p className="mb-2 font-mono-numbers text-xs uppercase tracking-widest text-neutral-400">
-          All companies{" "}
-          <span className="text-neutral-500">
-            {filtered.length < startups.length
-              ? `(${filtered.length} of ${startups.length})`
-              : `— ${startups.length}`}
-          </span>
+      {/* ── Card grid ── */}
+      <main className="mx-auto w-full max-w-[1200px] px-6 py-6 sm:px-4">
+        <p className="mb-4 font-mono-numbers text-xs text-neutral-500">
+          {filtered.length < startups.length
+            ? `${filtered.length} of ${startups.length} companies`
+            : `${startups.length} companies`}
         </p>
 
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-start py-20">
-            <p className="font-mono-numbers text-xs uppercase tracking-widest text-neutral-400">
+          <div className="py-16">
+            <p className="font-mono-numbers text-xs text-neutral-500">
               No companies match your filters.
             </p>
             <button
               type="button"
               onClick={() => setFilters(DEFAULT_FILTERS)}
-              className="mt-3 font-mono-numbers text-xs uppercase tracking-widest text-neutral-400 underline hover:text-neutral-700 transition-colors"
+              className="mt-2 font-mono-numbers text-xs text-neutral-500 underline hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] transition-colors"
             >
-              Clear filters
+              clear filters
             </button>
           </div>
         ) : (
-          <div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {filtered.map((startup) => (
               <StartupCard
                 key={startup.id}
@@ -108,36 +148,35 @@ export default function HomePage() {
                 onClick={() => setSelected(startup)}
               />
             ))}
-            <div className="border-t border-neutral-200" />
           </div>
         )}
       </main>
 
       {/* ── Footer ── */}
-      <div className="border-t border-neutral-200" />
-      <footer className="mx-auto w-full max-w-[1100px] px-8 py-6 sm:px-5">
-        <p className="font-mono-numbers text-xs uppercase tracking-widest text-neutral-400">
-          Built by Pia &mdash; Cursor + Claude Code &mdash;{" "}
+      <div className="border-t border-neutral-200 dark:border-neutral-800" />
+      <footer className="mx-auto w-full max-w-[1200px] px-6 py-4 sm:px-4">
+        <p className="font-mono-numbers text-xs text-neutral-500">
+          built by pia &middot; cursor + claude code &middot;{" "}
           <a
             href="https://github.com/pfperez/london-startup-tracker"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-neutral-700 transition-colors underline"
+            className="underline hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] transition-colors"
           >
-            GitHub
+            github
           </a>
-          {" "}&mdash;{" "}
+          {" "}&middot;{" "}
           <a
             href="#"
-            className="hover:text-neutral-700 transition-colors underline"
+            className="underline hover:text-[#0A0A0A] dark:hover:text-[#FAFAFA] transition-colors"
           >
-            Twitter/X
+            x
           </a>
         </p>
       </footer>
 
       {/* ── Detail sheet ── */}
       <StartupSheet startup={selected} onClose={() => setSelected(null)} />
-    </>
+    </div>
   );
 }
