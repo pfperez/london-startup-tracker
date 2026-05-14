@@ -120,7 +120,7 @@ export default function HomePage() {
           Built by Pia &middot; Cursor + Claude Code &middot;{" "}
           {/* Replace # with your GitHub repo URL after pushing */}
           <a
-            href="#"
+            href="https://github.com/pfperez/london-startup-tracker"
             className="hover:text-neutral-700 transition-colors underline"
           >
             GitHub

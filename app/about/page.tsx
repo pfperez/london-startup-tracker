@@ -80,10 +80,12 @@ export default function AboutPage() {
               If you know of a London startup I should have on here, reach out.
               I&apos;m especially interested in companies at Pre-seed through
               Series A where the founder story is interesting.{" "}
-              {/* Replace with your contact email */}
-              <span className="font-mono-numbers text-neutral-400">
-                {"{{CONTACT_EMAIL}}"}
-              </span>
+              <a
+                href="mailto:Piaperez1705@gmail.com"
+                className="font-mono-numbers text-neutral-400 underline hover:text-neutral-700 transition-colors"
+              >
+                Piaperez1705@gmail.com
+              </a>
             </p>
           </div>
 
@@ -95,9 +97,8 @@ export default function AboutPage() {
               Next.js, Tailwind CSS v4, Radix UI. Data lives in a single
               TypeScript file — no database, no CMS. Built in an afternoon using
               Cursor and Claude Code. Source on{" "}
-              {/* Replace # with your GitHub repo URL */}
               <a
-                href="#"
+                href="https://github.com/pfperez/london-startup-tracker"
                 className="underline hover:text-neutral-900 transition-colors"
               >
                 GitHub
